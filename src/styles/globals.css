@@ -1,0 +1,29 @@
+@import '@fontsource/inter/index.css';
+@import '@fontsource/outfit/index.css';
+@import '@fontsource/fira-code/index.css';
+
+@import './tokens/colors.css';
+@import './tokens/typography.css';
+@import './tokens/spacing.css';
+@import './tokens/motion.css';
+@import './tokens/shadows.css';
+
+@import 'tailwindcss';
+
+@layer base {
+  html,
+  body {
+    background-color: var(--color-bg-space);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Focus Indicator Ring for Accessibility */
+  *:focus-visible {
+    outline: 2px solid var(--color-accent-cyan);
+    outline-offset: 2px;
+  }
+}
