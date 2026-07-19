@@ -1,75 +1,66 @@
-# React + TypeScript + Vite
+# SpaceProbe V2
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> The next-generation web platform for SpaceProbe — bridging the gap between cutting-edge space research and real-world applications through technology, GIS, and outreach.
 
-Currently, two official plugins are available:
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Framer Motion](https://img.shields.io/badge/framer--motion-%230055FF.svg?style=for-the-badge&logo=framer&logoColor=white)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This repository contains the source code for the **SpaceProbe V2** corporate website. It is designed to feel like a premium deep-tech aerospace company (SpaceX + NASA JPL + Apple + Linear) rather than a generic SaaS landing page. It uses an elegant, dark-mode-first aesthetic with bespoke framer-motion interactions.
 
-## React Compiler
+## 🚀 Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Framework:** React 19 + TypeScript
+- **Build Tool:** Vite 8
+- **Styling:** Tailwind CSS v4 (Beta)
+- **Animation:** Framer Motion
+- **Icons:** Lucide React
+- **Data Fetching/State:** TanStack React Query v5
+- **Linting & Formatting:** ESLint, Prettier, Husky (lint-staged)
 
-## Expanding the ESLint configuration
+## 📦 Installation & Setup
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. **Clone the repository:**
+   ```bash
+   git clone git@github.com:arnavpotale/SpaceProbe-v2.git
+   cd "SpaceProbe v2"
+   ```
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+   The site will be available at `http://localhost:5173`.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 📜 Available Scripts
 
-```
+- `npm run dev` - Starts the Vite development server.
+- `npm run build` - Compiles TypeScript and builds the app for production.
+- `npm run lint` - Runs ESLint to find issues in the codebase.
+- `npm run format` - Formats all source files using Prettier.
+- `npm run typecheck` - Runs the TypeScript compiler to check for type errors without emitting files.
+- `npm run prepare` - Initializes Husky pre-commit hooks.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🎨 Design System & Architecture
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **Typography:** The app uses `Outfit` for display headings, `Inter` for body copy, and `Fira Code` for monospace snippets.
+- **Tokens:** Semantic design tokens are configured in `src/styles/tokens/`.
+- **Motion:** Global physics-based springs and custom easing curves (`[0.16, 1, 0.3, 1]`) are heavily utilized to achieve a buttery-smooth, premium feel.
+- **Structure:**
+  - `src/components/home/` - Homepage specific components and bespoke interactive sections.
+  - `src/components/layout/` - Global layout wrappers like `Navbar` and `Footer`.
+  - `src/content/` - Centralized content configurations for easy updates.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🤝 Contributing
 
-```
+Ensure that you have Husky hooks enabled so that files are automatically linted and formatted upon commit. Before submitting a PR, always verify the build:
+```bash
+npm run typecheck && npm run lint && npm run build
+````
