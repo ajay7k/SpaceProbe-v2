@@ -1,15 +1,19 @@
 @theme {
   /* System Backgrounds & Borders */
   --color-bg-space: #0a0a0a; /* Rich Black */
-  --color-bg-card: #0e1334; /* Sapphire */
+  --color-bg-card: #0e1334; /* Deep Sapphire */
+  --color-bg-card-hover: #121842; /* Elevated Sapphire */
   --color-border-subtle: rgba(216, 236, 249, 0.15); /* Ice Blue subtle */
-  --color-bg-hover: #0e1334; /* Sapphire */
+  --color-border-active: rgba(216, 236, 249, 0.4);
+  --color-bg-hover: #0e1334;
 
-  /* Neon Accents & Data Highlights */
-  --color-accent-cyan: #004dc0; /* Tech Blue */
-  --color-accent-blue: #004dc0; /* Tech Blue */
+  /* Accents & Data Highlights */
+  --color-accent-blue: #004dc0; /* Deep Tech Blue */
+  --color-accent-cyan: #00a8ff; /* Electric Cyan */
   --color-accent-teal: #d8ecf9; /* Ice Blue */
-  --color-accent-alert: #d8ecf9; /* Ice Blue (no red warnings needed for now) */
+  --color-accent-ice: #d8ecf9; /* Primary Ice Blue */
+  --color-accent-alert: #ff4757; /* Warning / High Kp Red */
+  --color-accent-warning: #ffa502; /* Advisory Orange */
 
   /* Text Color Tokens */
   --color-text-primary: #ffffff;

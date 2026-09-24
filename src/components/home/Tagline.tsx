@@ -1,9 +1,11 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { TAGLINE } from '@/content/homepage';
+import { useMediaQuery } from '@/hooks/use-media-query';
 
 export function Tagline() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -24,7 +26,7 @@ export function Tagline() {
 
   const lines = TAGLINE.text.split('\n');
 
-  // Hardcode 3 transforms to obey Rules of Hooks (since the tagline has 3 lines)
+  // Hardcode 3 transforms to obey Rules of Hooks
   const o1 = useTransform(smoothProgress, [0.3, 0.45], [0, 1]);
   const y1 = useTransform(smoothProgress, [0.3, 0.45], [40, 0]);
   const b1 = useTransform(smoothProgress, [0.3, 0.45], [12, 0]);
@@ -41,21 +43,34 @@ export function Tagline() {
   const blur3 = useTransform(b3, (b) => `blur(${b}px)`);
 
   const lineTransforms = [
-    { opacity: o1, y: y1, filter: blur1 },
-    { opacity: o2, y: y2, filter: blur2 },
-    { opacity: o3, y: y3, filter: blur3 },
+    {
+      opacity: prefersReducedMotion ? 1 : o1,
+      y: prefersReducedMotion ? 0 : y1,
+      filter: prefersReducedMotion ? 'none' : blur1,
+    },
+    {
+      opacity: prefersReducedMotion ? 1 : o2,
+      y: prefersReducedMotion ? 0 : y2,
+      filter: prefersReducedMotion ? 'none' : blur2,
+    },
+    {
+      opacity: prefersReducedMotion ? 1 : o3,
+      y: prefersReducedMotion ? 0 : y3,
+      filter: prefersReducedMotion ? 'none' : blur3,
+    },
   ];
 
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-[100vh] min-h-[600px] bg-[#0A0A0A] text-white overflow-hidden flex items-center justify-center"
+      aria-label="SpaceProbe Philosophy"
+      className="relative w-full h-[80vh] min-h-[500px] bg-[#0A0A0A] text-white overflow-hidden flex items-center justify-center border-t border-[#D8ECF9]/10"
     >
-      {/* Elegant Scientific Visualization: Satellite Telemetry / Orbital Mechanics */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-60">
+      {/* Scientific Visualization: Orbital Mechanics & Satellite Vector Rings */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-50">
         <svg
           viewBox="0 0 1000 1000"
-          className="w-[150vw] h-[150vw] max-w-[1200px] max-h-[1200px] opacity-40"
+          className="w-[140vw] h-[140vw] max-w-[1100px] max-h-[1100px] opacity-40"
         >
           <defs>
             <linearGradient id="orbit-grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -72,7 +87,9 @@ export function Tagline() {
           </defs>
 
           {/* Orbit 1 */}
-          <motion.g style={{ rotate: orbit1Rotation, transformOrigin: 'center' }}>
+          <motion.g
+            style={{ rotate: prefersReducedMotion ? 0 : orbit1Rotation, transformOrigin: 'center' }}
+          >
             <ellipse
               cx="500"
               cy="500"
@@ -89,12 +106,17 @@ export function Tagline() {
               stroke="#D8ECF9"
               strokeWidth="2"
               filter="url(#glow)"
-              style={{ pathLength: pathProgress1, opacity: pathProgress1 }}
+              style={{
+                pathLength: prefersReducedMotion ? 1 : pathProgress1,
+                opacity: prefersReducedMotion ? 0.8 : pathProgress1,
+              }}
             />
           </motion.g>
 
           {/* Orbit 2 */}
-          <motion.g style={{ rotate: orbit2Rotation, transformOrigin: 'center' }}>
+          <motion.g
+            style={{ rotate: prefersReducedMotion ? 0 : orbit2Rotation, transformOrigin: 'center' }}
+          >
             <ellipse
               cx="500"
               cy="500"
@@ -111,12 +133,17 @@ export function Tagline() {
               stroke="#004DC0"
               strokeWidth="2.5"
               filter="url(#glow)"
-              style={{ pathLength: pathProgress2, opacity: pathProgress2 }}
+              style={{
+                pathLength: prefersReducedMotion ? 1 : pathProgress2,
+                opacity: prefersReducedMotion ? 0.8 : pathProgress2,
+              }}
             />
           </motion.g>
 
           {/* Orbit 3 */}
-          <motion.g style={{ rotate: orbit3Rotation, transformOrigin: 'center' }}>
+          <motion.g
+            style={{ rotate: prefersReducedMotion ? 0 : orbit3Rotation, transformOrigin: 'center' }}
+          >
             <ellipse
               cx="500"
               cy="500"
@@ -134,16 +161,19 @@ export function Tagline() {
               stroke="#D8ECF9"
               strokeWidth="1.5"
               filter="url(#glow)"
-              style={{ pathLength: pathProgress3, opacity: pathProgress3 }}
+              style={{
+                pathLength: prefersReducedMotion ? 1 : pathProgress3,
+                opacity: prefersReducedMotion ? 0.8 : pathProgress3,
+              }}
             />
           </motion.g>
         </svg>
       </div>
 
-      <div className="relative z-10 w-full max-w-[var(--width-container-max)] mx-auto px-lg md:px-xl text-center">
-        <h2 className="text-h2 md:text-h1 lg:text-display leading-[1.3] font-display font-medium text-white tracking-tight flex flex-col gap-2">
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 md:px-8 text-center">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl leading-[1.3] font-display font-medium text-white tracking-tight flex flex-col gap-2">
           {lines.map((line, idx) => {
-            const transforms = lineTransforms[idx] || lineTransforms[2]; // fallback to last if more lines exist
+            const transforms = lineTransforms[idx] || lineTransforms[2];
             return (
               <motion.span
                 key={idx}
@@ -153,7 +183,9 @@ export function Tagline() {
                   filter: transforms.filter,
                 }}
                 className={
-                  idx === lines.length - 1 ? 'text-[#D8ECF9] font-bold mt-4' : 'text-white/80'
+                  idx === lines.length - 1
+                    ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#D8ECF9] via-white to-[#00a8ff] font-bold mt-2'
+                    : 'text-white/80'
                 }
               >
                 {line}

@@ -1,20 +1,24 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { cn } from '@/lib/utils';
+import { ArrowRight, Sparkles } from 'lucide-react';
+
+interface DomainItem {
+  id: string;
+  title: string;
+  shortTag: string;
+  description: string;
+  image: string;
+  href: string;
+}
 
 interface DomainCardProps {
-  domain: {
-    id: string;
-    title: string;
-    description: string;
-    image: string;
-    href: string;
-  };
+  domain: DomainItem;
   isActive: boolean;
   isMobile: boolean;
   onHoverStart: () => void;
   onHoverEnd: () => void;
   onClick: () => void;
+  index: number;
 }
 
 export function DomainCard({
@@ -24,63 +28,105 @@ export function DomainCard({
   onHoverStart,
   onHoverEnd,
   onClick,
+  index,
 }: DomainCardProps) {
-  // We use pure CSS flex transition for smooth, performant layout animations instead of React state-driven framer-motion layout
-  const flexGrowValue = isActive ? (isMobile ? 5 : 7) : 1;
-  const minHeightValue = isMobile ? (isActive ? '400px' : '100px') : 'auto';
+  // Rebalanced desktop flex values: active card gets 6x flex space (approx 70% width)
+  const flexGrowValue = isActive ? 6 : 1;
+
+  const handleCardClick = () => {
+    if (!isActive && isMobile) {
+      onClick();
+      return;
+    }
+    // Navigate smoothly to platform section
+    const el = document.getElementById('platform');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleCardClick();
+    }
+  };
 
   return (
     <div
+      role="button"
+      tabIndex={0}
+      aria-label={`${domain.title} — ${domain.shortTag}. Click to explore platform.`}
+      aria-expanded={isActive}
       onMouseEnter={onHoverStart}
       onMouseLeave={onHoverEnd}
-      onClick={onClick}
-      className={cn(
-        'relative rounded-3xl overflow-hidden cursor-pointer flex-shrink-0 flex flex-col justify-end group transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] border',
+      onClick={handleCardClick}
+      onKeyDown={handleKeyDown}
+      className={`relative rounded-3xl overflow-hidden cursor-pointer flex flex-col justify-end group transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] border outline-none focus-visible:ring-2 focus-visible:ring-[#00a8ff] select-none ${
         isActive
-          ? 'border-[#D8ECF9]/30 shadow-[0_0_40px_rgba(0,77,192,0.15)]'
-          : 'border-[#D8ECF9]/10 hover:border-[#D8ECF9]/20'
-      )}
-      style={{ flex: flexGrowValue, minHeight: minHeightValue }}
+          ? 'border-[#00a8ff]/50 shadow-[0_0_40px_rgba(0,77,192,0.3)]'
+          : 'border-[#D8ECF9]/10 hover:border-[#D8ECF9]/30 hover:shadow-lg'
+      }`}
+      style={{
+        flex: isMobile ? 'none' : flexGrowValue,
+        minHeight: isMobile ? (isActive ? '380px' : '88px') : 'auto',
+      }}
     >
-      {/* Background Image Layer */}
+      {/* Background Image Layer with Depth Filter */}
       <div
-        className={cn(
-          'absolute inset-0 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]',
+        className={`absolute inset-0 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           isActive
-            ? 'scale-105 opacity-100 grayscale-0 saturate-100'
-            : 'scale-100 opacity-40 grayscale saturate-0'
-        )}
+            ? 'scale-105 opacity-90 grayscale-0 saturate-100'
+            : 'scale-100 opacity-30 grayscale saturate-0 group-hover:opacity-40'
+        }`}
       >
         <img
           src={domain.image}
           alt={domain.title}
           loading="lazy"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/90 via-[#0A0A0A]/30 to-transparent" />
+        {/* Dark contrast gradient to ensure 100% readable text */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/65 to-[#0A0A0A]/20" />
       </div>
 
-      {/* Content Layer */}
-      <div className="relative z-10 w-full h-full flex items-end">
-        {/* Vertical / Collapsed Title */}
-        <div
-          className={cn(
-            'absolute inset-0 p-lg md:p-xl flex items-end lg:items-start lg:justify-end flex-col transition-opacity duration-400',
-            isActive ? 'opacity-0 pointer-events-none' : 'opacity-100'
-          )}
-        >
-          {!isMobile ? (
-            <h3 className="text-body font-display font-bold tracking-widest text-[#D8ECF9] whitespace-nowrap origin-bottom-left -rotate-90 translate-y-[-20px] uppercase opacity-70">
-              {domain.title}
-            </h3>
-          ) : (
-            <h3 className="text-small font-display font-bold tracking-widest text-[#D8ECF9] uppercase opacity-70">
-              {domain.title}
-            </h3>
-          )}
-        </div>
+      {/* Content Container */}
+      <div className="relative z-10 w-full h-full flex flex-col justify-end p-6 sm:p-8 md:p-10">
+        {/* 1. COLLAPSED DESKTOP STATE (Vertical Tab Styling) */}
+        {!isActive && !isMobile && (
+          <div className="absolute inset-0 p-6 flex flex-col justify-between items-center pointer-events-none">
+            <span className="text-xs font-mono font-bold text-[#00a8ff]/70">0{index + 1}</span>
+            <div className="flex items-center justify-center rotate-[-90deg] translate-y-[-24px] origin-center whitespace-nowrap">
+              <h3 className="text-sm font-display font-bold tracking-widest text-white/75 group-hover:text-white uppercase transition-colors">
+                {domain.title}
+              </h3>
+            </div>
+            <ArrowRight
+              size={14}
+              className="text-[#00a8ff]/50 group-hover:text-white transition-colors"
+            />
+          </div>
+        )}
 
-        {/* Expanded Active Content with Staggered Reveal */}
+        {/* 2. COLLAPSED MOBILE STATE (Horizontal Row Styling) */}
+        {!isActive && isMobile && (
+          <div className="w-full flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono text-[#00a8ff] font-bold">0{index + 1}</span>
+              <div>
+                <span className="text-[10px] uppercase font-mono tracking-widest text-[#00a8ff]/80 block">
+                  {domain.shortTag}
+                </span>
+                <h3 className="text-base font-display font-bold text-white uppercase">
+                  {domain.title}
+                </h3>
+              </div>
+            </div>
+            <ArrowRight size={16} className="text-[#00a8ff]" />
+          </div>
+        )}
+
+        {/* 3. EXPANDED ACTIVE STATE (Full Horizontal Space, Generous Typography, Integrated Click Cue) */}
         <AnimatePresence mode="wait">
           {isActive && (
             <motion.div
@@ -88,58 +134,33 @@ export function DomainCard({
               animate="visible"
               exit="exit"
               variants={{
-                hidden: { opacity: 0 },
-                visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
-                exit: { opacity: 0, transition: { duration: 0.2 } },
+                hidden: { opacity: 0, y: 15 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
+                },
+                exit: { opacity: 0, transition: { duration: 0.15 } },
               }}
-              className="flex flex-col max-w-[650px] p-lg md:p-xl w-full"
+              className="flex flex-col w-full max-w-2xl"
             >
-              <motion.h3
-                variants={{
-                  hidden: { opacity: 0, y: 15 },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
-                  },
-                }}
-                className="text-h2 md:text-h1 font-display font-bold text-white mb-sm leading-tight drop-shadow-lg whitespace-nowrap"
-              >
+              {/* Category Pill */}
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#004DC0]/40 border border-[#D8ECF9]/20 w-fit mb-3">
+                <Sparkles size={11} className="text-[#00a8ff]" />
+                <span className="text-[10px] font-mono uppercase tracking-wider text-[#D8ECF9]">
+                  0{index + 1} // {domain.shortTag}
+                </span>
+              </div>
+
+              {/* Title (Generous scale) */}
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white mb-3 leading-tight tracking-tight">
                 {domain.title}
-              </motion.h3>
+              </h3>
 
-              <motion.p
-                variants={{
-                  hidden: { opacity: 0, y: 15 },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
-                  },
-                }}
-                className="text-body-large text-white/90 leading-[1.8] mb-xl font-light drop-shadow-md whitespace-pre-line"
-              >
+              {/* Description (Spacious horizontal container, easily readable) */}
+              <p className="text-sm sm:text-base text-white/90 leading-relaxed font-light mb-6">
                 {domain.description}
-              </motion.p>
-
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0, scale: 0.95 },
-                  visible: {
-                    opacity: 1,
-                    scale: 1,
-                    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
-                  },
-                }}
-              >
-                <a
-                  href={domain.href}
-                  className="inline-flex items-center gap-xs px-lg py-sm bg-white/10 hover:bg-[#D8ECF9] text-white hover:text-black rounded backdrop-blur-md border border-[#D8ECF9]/30 transition-all duration-300 font-bold tracking-wider uppercase text-caption group/btn outline-none focus-visible:ring-2 focus-visible:ring-[#004DC0]"
-                >
-                  Explore More
-                  <span className="transition-transform group-hover/btn:translate-x-1">→</span>
-                </a>
-              </motion.div>
+              </p>
             </motion.div>
           )}
         </AnimatePresence>
@@ -147,3 +168,5 @@ export function DomainCard({
     </div>
   );
 }
+
+export default DomainCard;
