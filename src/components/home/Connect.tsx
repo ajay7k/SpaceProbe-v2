@@ -47,7 +47,7 @@ export function Connect() {
         </motion.div>
 
         {/* 3 Contact Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-14">
           {CONNECT_CONTENT.contacts.map((item, idx) => {
             const Icon = ICONS[idx] || Mail;
             return (
@@ -94,16 +94,19 @@ export function Connect() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.7, ease: EASE }}
-          className="rounded-3xl bg-gradient-to-r from-[#0E1334] via-[#0952BD]/30 to-[#0E1334] border border-[#00a8ff]/30 p-8 sm:p-12 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl"
+          className="rounded-3xl bg-gradient-to-r from-[#0E1334] via-[#0952BD]/25 to-[#0E1334] border border-[#00a8ff]/30 p-8 sm:p-12 lg:p-14 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden group"
         >
-          <div className="max-w-xl text-center sm:text-left">
-            <span className="text-[10px] uppercase font-mono tracking-widest text-[#00a8ff] block mb-1">
-              Start The Conversation
+          {/* Subtle Ambient Radial Glow */}
+          <div className="absolute top-0 right-1/4 w-80 h-80 bg-[radial-gradient(circle,rgba(0,168,255,0.12)_0%,transparent_70%)] blur-2xl pointer-events-none" />
+
+          <div className="flex-1 w-full text-center lg:text-left relative z-10">
+            <span className="text-[11px] uppercase font-mono tracking-widest text-[#00a8ff] font-semibold block mb-2">
+              // Start The Conversation
             </span>
-            <h3 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white mb-2">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white mb-3 tracking-tight leading-snug">
               Transforming Space Science into Operational Resilience
             </h3>
-            <p className="text-xs sm:text-sm text-white/70 font-light">
+            <p className="text-sm md:text-base text-[#D8ECF9]/80 font-light leading-relaxed max-w-2xl mx-auto lg:mx-0">
               Connect with our heliophysicists and data engineers to explore customized telemetry
               and mission support.
             </p>
@@ -111,10 +114,10 @@ export function Connect() {
 
           <a
             href="mailto:director@spaceprobe.in?subject=SpaceProbe%20Partnership%20and%20Telemetry%20Inquiry"
-            className="shrink-0 inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-white text-black hover:bg-[#D8ECF9] font-bold text-xs uppercase tracking-wider shadow-lg hover:scale-105 transition-all duration-300 outline-none focus-visible:ring-2 focus-visible:ring-[#004DC0]"
+            className="shrink-0 relative z-10 inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-white text-black hover:bg-[#00a8ff] hover:text-white font-bold text-xs uppercase tracking-wider shadow-lg hover:shadow-[0_0_30px_rgba(0,168,255,0.4)] hover:scale-105 transition-all duration-300 outline-none focus-visible:ring-2 focus-visible:ring-[#00a8ff]"
           >
             <span>Initiate Collaboration</span>
-            <ArrowRight size={14} />
+            <ArrowRight size={15} />
           </a>
         </motion.div>
       </div>

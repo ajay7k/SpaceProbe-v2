@@ -1,13 +1,4 @@
 @theme {
-  /* 4px-Based Standard Spacing Scale */
-  --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 32px;
-  --spacing-xxl: 48px;
-  --spacing-xxxl: 64px;
-
   /* Border Radius Tokens */
   --radius-sm: 4px;
   --radius-md: 8px;
@@ -25,7 +16,20 @@
   --spacing-section: 96px;
   --spacing-footer: 48px;
 
-  /* Responsive Breakpoints (Breakpoints) */
+  /* Container / Max-Width Scale */
+  --container-xs: 20rem;
+  --container-sm: 24rem;
+  --container-md: 28rem;
+  --container-lg: 32rem;
+  --container-xl: 36rem;
+  --container-2xl: 42rem;
+  --container-3xl: 48rem;
+  --container-4xl: 56rem;
+  --container-5xl: 64rem;
+  --container-6xl: 72rem;
+  --container-7xl: 80rem;
+
+  /* Responsive Breakpoints */
   --breakpoint-sm: 640px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
